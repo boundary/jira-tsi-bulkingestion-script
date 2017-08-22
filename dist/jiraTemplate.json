@@ -1,0 +1,21 @@
+{
+    "config": {
+        "jiraHostName": "<Enter host name>",
+        "jiraUserName": "<UserName>",
+        "jiraPassword": "<password>",
+        "tsiApiToken": "30af27bc-5586-4905-8466-6e13c6f8bdfb",
+        "protocolType": "https",
+        "startDateTime": "2005-02-06 00:00",
+        "endDateTime": "2017-08-07 00:00"
+    },
+    "filter": {
+        "status": ["Closed"],
+        "issueType": [],
+        "priority": []
+    },
+    "eventDefinition": {
+        "properties": {
+            "app_id": "Jira TSI Integration"
+        }
+    }
+}
