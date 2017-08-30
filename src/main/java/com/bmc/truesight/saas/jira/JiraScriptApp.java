@@ -24,6 +24,7 @@ import com.bmc.truesight.saas.jira.beans.Success;
 import com.bmc.truesight.saas.jira.beans.TSIEvent;
 import com.bmc.truesight.saas.jira.beans.Template;
 import com.bmc.truesight.saas.jira.exception.BulkEventsIngestionFailedException;
+import com.bmc.truesight.saas.jira.exception.JiraApiInstantiationFailedException;
 import com.bmc.truesight.saas.jira.exception.JiraLoginFailedException;
 import com.bmc.truesight.saas.jira.exception.JiraReadFailedException;
 import com.bmc.truesight.saas.jira.exception.ParsingException;
@@ -86,6 +87,9 @@ public class JiraScriptApp {
             } catch (JiraLoginFailedException e) {
                 log.error(e.getMessage());
                 template = null;
+            } catch (JiraApiInstantiationFailedException e) {
+                log.error(e.getMessage());
+                template = null;
             }
             if (hasLoggedIntoJira) {
                 try {
@@ -99,6 +103,9 @@ public class JiraScriptApp {
                 } catch (JiraReadFailedException e) {
                     log.error(e.getMessage());
                 } catch (ParseException e) {
+                    log.error(e.getMessage());
+                    e.printStackTrace();
+                } catch (JiraApiInstantiationFailedException e) {
                     log.error(e.getMessage());
                     e.printStackTrace();
                 } finally {
