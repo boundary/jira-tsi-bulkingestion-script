@@ -1,6 +1,7 @@
 {
     "config": {
         "jiraHostName": "<Enter host name>",
+        "jiraPort": "",
         "jiraUserName": "<UserName>",
         "jiraPassword": "<password>",
         "tsiApiToken": "<Enter TSI token>",
