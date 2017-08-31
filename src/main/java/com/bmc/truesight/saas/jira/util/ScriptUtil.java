@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bmc.truesight.saas.jira.beans.Template;
+import com.bmc.truesight.saas.jira.exception.JiraApiInstantiationFailedException;
 import com.bmc.truesight.saas.jira.exception.ParsingException;
 import com.bmc.truesight.saas.jira.exception.ValidationException;
 import com.bmc.truesight.saas.jira.impl.GenericTemplateParser;
@@ -29,7 +30,7 @@ public class ScriptUtil {
         return DATE_FORMAT.format(date);
     }
 
-    public static Template prepareTemplate() throws ParsingException, ValidationException, IOException {
+    public static Template prepareTemplate() throws ParsingException, ValidationException, IOException, JiraApiInstantiationFailedException {
         String path = null;
 
         path = new java.io.File(".").getCanonicalPath();
@@ -42,6 +43,7 @@ public class ScriptUtil {
         Template defaultTemplate = preParser.loadDefaults();
         log.debug("Template defaults loading sucessfuly finished ");
         template = parser.readParseConfigFile(defaultTemplate, path);
+        template = parser.ignoreFields(template);
         log.debug("User template configuration parsing successful ");
 
         // VALIDATION OF THE CONFIGURATION

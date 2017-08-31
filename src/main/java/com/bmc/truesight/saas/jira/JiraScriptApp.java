@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bmc.truesight.saas.jira.beans.Configuration;
 import com.bmc.truesight.saas.jira.beans.Error;
-import com.bmc.truesight.saas.jira.beans.JIRAEventResponse;
+import com.bmc.truesight.saas.jira.beans.JiraEventResponse;
 import com.bmc.truesight.saas.jira.beans.Result;
 import com.bmc.truesight.saas.jira.beans.Success;
 import com.bmc.truesight.saas.jira.beans.TSIEvent;
@@ -30,8 +30,7 @@ import com.bmc.truesight.saas.jira.exception.JiraReadFailedException;
 import com.bmc.truesight.saas.jira.exception.ParsingException;
 import com.bmc.truesight.saas.jira.exception.ValidationException;
 import com.bmc.truesight.saas.jira.impl.EventIngestionExecuterService;
-import com.bmc.truesight.saas.jira.impl.GenericJiraReader;
-import com.bmc.truesight.saas.jira.in.JiraReader;
+import com.bmc.truesight.saas.jira.impl.JiraReader;
 import com.bmc.truesight.saas.jira.integration.adapter.JiraEntryEventAdapter;
 import com.bmc.truesight.saas.jira.util.Constants;
 import com.bmc.truesight.saas.jira.util.ScriptUtil;
@@ -80,10 +79,10 @@ public class JiraScriptApp {
         log.debug("Template file reading and parsing successful");
         if (isTemplateValid) {
             Configuration config = template.getConfig();
-            JiraReader jiraReader = new GenericJiraReader();
+            JiraReader jiraReader = new JiraReader();
             boolean hasLoggedIntoJira = false;
             try {
-                hasLoggedIntoJira = jiraReader.login(config);
+                hasLoggedIntoJira = jiraReader.validateCredentials(config);
             } catch (JiraLoginFailedException e) {
                 log.error(e.getMessage());
                 template = null;
@@ -104,10 +103,8 @@ public class JiraScriptApp {
                     log.error(e.getMessage());
                 } catch (ParseException e) {
                     log.error(e.getMessage());
-                    e.printStackTrace();
                 } catch (JiraApiInstantiationFailedException e) {
                     log.error(e.getMessage());
-                    e.printStackTrace();
                 } finally {
                     //jiraReader.logout(user);
                 }
@@ -170,12 +167,12 @@ public class JiraScriptApp {
         boolean hasLoggedIntoJira = false;
         CSVWriter writer = null;
         Configuration config = template.getConfig();
-        JiraReader reader = new GenericJiraReader();
-        JIRAEventResponse jiraResponse = new JIRAEventResponse();
+        JiraReader reader = new JiraReader();
+        JiraEventResponse jiraResponse = new JiraEventResponse();
         List<TSIEvent> lastEventList = new ArrayList<>();
         try {
             // Start Login
-            hasLoggedIntoJira = reader.login(config);
+            hasLoggedIntoJira = reader.validateCredentials(config);
             JiraEntryEventAdapter adapter = new JiraEntryEventAdapter();
             int chunkSize = config.getChunkSize();
             int startFrom = 0;
