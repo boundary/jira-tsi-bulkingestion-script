@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.bmc.truesight.saas.jira.beans.Configuration;
 import com.bmc.truesight.saas.jira.beans.Error;
-import com.bmc.truesight.saas.jira.beans.JIRAEventResponse;
+import com.bmc.truesight.saas.jira.beans.JiraEventResponse;
 import com.bmc.truesight.saas.jira.beans.Result;
 import com.bmc.truesight.saas.jira.beans.Success;
 import com.bmc.truesight.saas.jira.beans.TSIEvent;
@@ -168,7 +168,7 @@ public class JiraScriptApp {
         CSVWriter writer = null;
         Configuration config = template.getConfig();
         JiraReader reader = new JiraReader();
-        JIRAEventResponse jiraResponse = new JIRAEventResponse();
+        JiraEventResponse jiraResponse = new JiraEventResponse();
         List<TSIEvent> lastEventList = new ArrayList<>();
         try {
             // Start Login
