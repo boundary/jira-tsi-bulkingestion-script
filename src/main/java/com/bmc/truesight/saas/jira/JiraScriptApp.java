@@ -76,7 +76,7 @@ public class JiraScriptApp {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        log.debug("Template file reading and parsing successful");
+        log.debug("Template file reading and parsing successful status = {}", isTemplateValid);
         if (isTemplateValid) {
             JiraReader jiraReader = null;
             boolean hasLoggedIntoJira = false;
@@ -183,6 +183,7 @@ public class JiraScriptApp {
             int validRecords = 0;
             log.info("Started reading {} Jira issues starting from index {} , [Start Date: {}, End Date: {}]", new Object[]{chunkSize, startFrom, ScriptUtil.dateToString(config.getStartDateTime()), ScriptUtil.dateToString(config.getEndDateTime())});
             Map<String, List<String>> errorsMap = new HashMap<>();
+            List<String> droppedEventIds = new ArrayList<>();
             //Reading first Iteration to get the Idea of total available count
             String csv = "Jira_records_" + config.getStartDateTime().getTime() + "_TO_" + config.getEndDateTime().getTime() + ".csv";
             String[] headers = getFieldHeaders(template);
@@ -229,6 +230,7 @@ public class JiraScriptApp {
                     for (TSIEvent event : jiraResponse.getInvalidEventList()) {
                         eventIds.add(event.getProperties().get(Constants.FIELD_FETCH_KEY));
                     }
+                    droppedEventIds.addAll(eventIds);
                     log.error("following Jira issue ids are larger than allowed limits [{}]", String.join(",", eventIds));
                 }
                 if (exportToCsvFlag) {
@@ -266,6 +268,9 @@ public class JiraScriptApp {
             log.info("__________________ Jira Issues ingestion to truesight intelligence final status: Jira Record(s) = {}, Valid Record(s) Sent = {}, Successful = {} , Failure = {} ______", new Object[]{availableRecordsSize, validRecords, totalSuccessful, totalFailure});
             if (exportToCsvFlag) {
                 log.info("__________________{} event(s) written to the CSV file {}", validRecords, csv);
+            }
+            if (droppedEventIds.size() > 0) {
+                log.error("______Following {} events were invalid & dropped. {}", droppedEventIds.size(), droppedEventIds);
             }
             if (totalFailure > 0) {
                 log.error("__________________ Failures (No of times seen), [Reference Id(s)] ______");
