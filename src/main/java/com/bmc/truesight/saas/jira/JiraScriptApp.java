@@ -211,11 +211,11 @@ public class JiraScriptApp {
                 totalRecordsRead += recordsCount;
                 validRecords += jiraResponse.getValidEventList().size();
                 if (recordsCount < chunkSize && totalRecordsRead < availableRecordsSize) {
-                    log.info(" Request Sent to remedy (startFrom:" + startFrom + ",chunkSize:" + chunkSize + "), Response(Valid Event(s):" + jiraResponse.getValidEventList().size() + ", Invalid Event(s):" + jiraResponse.getInvalidEventIdsList().size() + ", totalRecordsRead: (" + totalRecordsRead + "/" + availableRecordsSize + ")");
+                    log.info(" Request Sent to Jira (startFrom:" + startFrom + ",chunkSize:" + chunkSize + "), Response(Valid Event(s):" + jiraResponse.getValidEventList().size() + ", Invalid Event(s):" + jiraResponse.getInvalidEventIdsList().size() + ", totalRecordsRead: (" + totalRecordsRead + "/" + availableRecordsSize + ")");
                     log.info(" Based on response as, adjusting the chunk Size as " + recordsCount);
                     chunkSize = recordsCount;
                 } else if (recordsCount <= chunkSize) {
-                    log.info(" Request Sent to remedy (startFrom:" + startFrom + ",chunkSize:" + chunkSize + "), Response(Valid Event(s):" + jiraResponse.getValidEventList().size() + ", Invalid Event(s):" + jiraResponse.getInvalidEventIdsList().size() + ", totalRecordsRead: (" + totalRecordsRead + "/" + availableRecordsSize + ")");
+                    log.info(" Request Sent to Jira (startFrom:" + startFrom + ",chunkSize:" + chunkSize + "), Response(Valid Event(s):" + jiraResponse.getValidEventList().size() + ", Invalid Event(s):" + jiraResponse.getInvalidEventIdsList().size() + ", totalRecordsRead: (" + totalRecordsRead + "/" + availableRecordsSize + ")");
                 }
                 if (totalRecordsRead < availableRecordsSize && (totalRecordsRead + chunkSize) > availableRecordsSize) {
                     //assuming the long value would be in int range always
