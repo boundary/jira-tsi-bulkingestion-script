@@ -6,8 +6,8 @@
         "jiraPassword": "<password>",
         "tsiApiToken": "<Enter TSI token>",
         "protocolType": "https",
-        "startDateTime": "2005-02-06 00:00",
-        "endDateTime": "2017-08-07 00:00"
+        "startDateTime": "2005-02-06 00:00:00 UTC",
+        "endDateTime": "2017-08-07 00:00:00 UTC"
     },
     "filter": {
         "status": ["Closed"],
