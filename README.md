@@ -19,7 +19,7 @@ This Script ingests historical Jira issues into TSI. Based on the configuration 
 3.	Open jiraTemplate.json file and input the required details in config section.
 4.	Open command prompt and move to the same location.
 5.	Run the jar file.
-	$ java -jar jira-tsi-bulkingestion-script-0.0.1-SNAPSHOT.jar
+	$ java -jar jira-tsi-bulkingestion-script-0.0.1.jar
 6.	Read the output and provide the input in affirmative/negative.
 `
 
