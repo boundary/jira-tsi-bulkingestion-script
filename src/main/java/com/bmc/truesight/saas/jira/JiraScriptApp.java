@@ -105,6 +105,8 @@ public class JiraScriptApp {
                     log.error(e.getMessage());
                 } catch (JiraApiInstantiationFailedException e) {
                     log.error(e.getMessage());
+                } catch (Exception e) {
+                    log.error(e.getMessage());
                 } finally {
                     //jiraReader.logout(user);
                 }
@@ -210,6 +212,10 @@ public class JiraScriptApp {
                 int recordsCount = jiraResponse.getValidEventList().size() + jiraResponse.getInvalidEventIdsList().size();
                 totalRecordsRead += recordsCount;
                 validRecords += jiraResponse.getValidEventList().size();
+                if (jiraResponse.getTotalCountAvailable() != availableRecordsSize) {
+                    log.info("Total available tickets matching the filter criteria has changed from {} to {}", availableRecordsSize, jiraResponse.getTotalCountAvailable());
+                    availableRecordsSize = jiraResponse.getTotalCountAvailable();
+                }
                 if (recordsCount < chunkSize && totalRecordsRead < availableRecordsSize) {
                     log.info(" Request Sent to Jira (startFrom:" + startFrom + ",chunkSize:" + chunkSize + "), Response(Valid Event(s):" + jiraResponse.getValidEventList().size() + ", Invalid Event(s):" + jiraResponse.getInvalidEventIdsList().size() + ", totalRecordsRead: (" + totalRecordsRead + "/" + availableRecordsSize + ")");
                     log.info(" Based on response as, adjusting the chunk Size as " + recordsCount);
@@ -217,11 +223,16 @@ public class JiraScriptApp {
                 } else if (recordsCount <= chunkSize) {
                     log.info(" Request Sent to Jira (startFrom:" + startFrom + ",chunkSize:" + chunkSize + "), Response(Valid Event(s):" + jiraResponse.getValidEventList().size() + ", Invalid Event(s):" + jiraResponse.getInvalidEventIdsList().size() + ", totalRecordsRead: (" + totalRecordsRead + "/" + availableRecordsSize + ")");
                 }
+
                 if (totalRecordsRead < availableRecordsSize && (totalRecordsRead + chunkSize) > availableRecordsSize) {
                     //assuming the long value would be in int range always
                     chunkSize = ((int) (availableRecordsSize) - totalRecordsRead);
                 } else if (totalRecordsRead >= availableRecordsSize) {
                     readNext = false;
+                }
+                if (recordsCount == 0) {
+                    readNext = false;
+                    continue;
                 }
                 iteration++;
                 startFrom = totalRecordsRead;
